@@ -33,5 +33,5 @@ install -m 755 check_cas.pl %{buildroot}/%{_libexecdir}/argo-monitoring/probes/s
 %attr(0755,root,root) /%{_libexecdir}/argo-monitoring/probes/seadatacloud-nvs2/seadatacloud-nvs2.sh
 
 %changelog
-* Thu April 11 2019 Themis Zamani <themiszamani@gmail.com> - 0.1-1
+* Thu Apr 11 2019 Themis Zamani <themiszamani@gmail.com>  - 1.0.0-1%{?dist}
 - Initial version of the package. Work done by Micahlis Iordanis - iordanism@hcmr.gr 
