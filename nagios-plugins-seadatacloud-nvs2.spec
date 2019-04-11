@@ -23,7 +23,7 @@ Nagios probes to check functionality of the nvs2 vocabulary
 
 install -d %{buildroot}/%{_libexecdir}/argo-monitoring/probes/seadatacloud-nvs2
 install -d %{buildroot}/%{_sysconfdir}/nagios/plugins/seadatacloud-nvs2
-install -m 755 check_cas.pl %{buildroot}/%{_libexecdir}/argo-monitoring/probes/seadatacloud-nvs2/seadatacloud-nvs2.sh
+install -m 755 seadatacloud-nvs2.sh %{buildroot}/%{_libexecdir}/argo-monitoring/probes/seadatacloud-nvs2/seadatacloud-nvs2.sh
 
 %files
 %dir /%{_libexecdir}/argo-monitoring
