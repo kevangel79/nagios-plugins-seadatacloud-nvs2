@@ -36,7 +36,7 @@ case $key in
     DUMMY="$2"
     if [ -z "$DUMMY" ] || [[ "$DUMMY" =~ ^-.* ]]
       then
-        echo "CRITICAL - No DUMMY STRING is defined | CRITICAL - No DUMMY STRING is defined"
+        echo "UNKNOWN - No DUMMY STRING is defined | UNKNOWN - No DUMMY STRING is defined"
 	shift
         exit 3
     fi
@@ -86,6 +86,7 @@ fi
 
 ################################################################
 # Capture HTTP STATUS CODE in variable
+RESP_TIME=$(curl -IL  -w '%{time_total}\n' -s -o /dev/null ${URI} --connect-timeout ${TIMEOUT})
 STATUS=$(curl -IL  -w '%{http_code}\n' -s -o /dev/null ${URI} --connect-timeout ${TIMEOUT})
 
 #CHECK if HTTP STATUS CODE is 200 or 000
@@ -105,24 +106,25 @@ if [ ${STATUS} -eq 200 ];then
 		DUMMY_GREPED=$(echo $?)
 
 		if [ ${DUMMY_GREPED} -eq 0 ];then
-		        echo "OK - HTTP STATUS CODE is ${STATUS} - The XML code is VALID - The DUMMY string exists | http_status_code=${STATUS}, xml_valid_code=0, dummy_str_exist=0 "
+		        echo "OK - HTTP STATUS CODE is ${STATUS} - The XML code is VALID - The DUMMY string exists - Response Time = ${RESP_TIME}ms | response_time=${RESP_TIME}[ms], http_status_code=${STATUS}, xml_valid_code=0, dummy_str_exist=0 "
 		        exit 0
 		else
-		        echo "CRITICAL - The DUMMY string does NOT exist | http_status_code=${STATUS}, xml_valid_code=0, dummy_string_existance=1"
+		        echo "CRITICAL - The DUMMY string does NOT exist | response_time=${RESP_TIME}[ms], http_status_code=${STATUS}, xml_valid_code=0, dummy_string_existance=1"
 		        exit 2
 		fi
 
 
 	else
-        	echo "CRITICAL - The XML code is NOT valid | http_status_code=${STATUS}, xml_valid_code=1, "
+        	echo "CRITICAL - The XML code is NOT valid | response_time=${RESP_TIME}[ms], http_status_code=${STATUS}, xml_valid_code=1, "
         	exit 2
 	fi
 
 elif [ ${STATUS} -eq 000 ]; then
-        echo "UNKNOWN - Connection Timeout | http_status_code=${STATUS},"
+        echo "UNKNOWN - Connection Timeout | response_time=${RESP_TIME}[ms], http_status_code=${STATUS},"
         exit 3
 else
-        echo "CRITICAL - HTTP STATUS CODE is ${STATUS} | http_status_code=${STATUS}, "
+        echo "CRITICAL - HTTP STATUS CODE is ${STATUS} | response_time=${RESP_TIME}[ms], http_status_code=${STATUS}, "
         exit 2
 fi
+
 
